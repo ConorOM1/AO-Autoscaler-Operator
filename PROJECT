@@ -10,4 +10,14 @@ plugins:
   scorecard.sdk.operatorframework.io/v2: {}
 projectName: ao-autoscaler
 repo: github.com/ConorOM1/AO-Autoscaler-Operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: autoscaler.project.com
+  group: scaling
+  kind: Autoscaler
+  path: github.com/ConorOM1/AO-Autoscaler-Operator/api/v1alpha1
+  version: v1alpha1
 version: "3"

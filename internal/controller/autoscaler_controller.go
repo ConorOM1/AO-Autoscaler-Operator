@@ -19,10 +19,12 @@ package controller
 import (
 	"context"
 
+	log "github.com/sirupsen/logrus"
+	"k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	scalingv1alpha1 "github.com/ConorOM1/AO-Autoscaler-Operator/api/v1alpha1"
 )
@@ -47,9 +49,44 @@ type AutoscalerReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.15.0/pkg/reconcile
 func (r *AutoscalerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
 
 	// TODO(user): your logic here
+	// Fetch the Autoscaler instance
+	var autoscaler scalingv1alpha1.Autoscaler
+
+	if err := r.Get(ctx, req.NamespacedName, &autoscaler); err != nil {
+		log.Error(err, "unable to fetch Autoscaler")
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	// Fetch the target Deployment
+	var deployment v1.Deployment
+	deploymentName := types.NamespacedName{
+		Namespace: autoscaler.Namespace,
+		Name:      autoscaler.Spec.TargetDeploymentName,
+	}
+	if err := r.Get(ctx, deploymentName, &deployment); err != nil {
+		log.Error(err, "unable to fetch target Deployment")
+		return ctrl.Result{}, err
+	}
+
+	// Update Deployment replicas if necessary
+	minReplicas := autoscaler.Spec.MinReplicas
+	if *deployment.Spec.Replicas != minReplicas {
+		log.Info("Updating Deployment replicas", "from ", *deployment.Spec.Replicas, "to ", minReplicas)
+		deployment.Spec.Replicas = &minReplicas
+		if err := r.Update(ctx, &deployment); err != nil {
+			log.Error(err, "unable to update Deployment replicas")
+			return ctrl.Result{}, err
+		}
+	}
+
+	// Update Autoscaler status
+	autoscaler.Status.CurrentReplicas = deployment.Status.Replicas
+	if err := r.Status().Update(ctx, &autoscaler); err != nil {
+		log.Error(err, "failed to update Autoscaler status")
+		return ctrl.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
 }

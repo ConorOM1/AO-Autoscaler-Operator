@@ -38,6 +38,7 @@ type AutoscalerReconciler struct {
 //+kubebuilder:rbac:groups=scaling.autoscaler.project.com,resources=autoscalers,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=scaling.autoscaler.project.com,resources=autoscalers/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=scaling.autoscaler.project.com,resources=autoscalers/finalizers,verbs=update
+//+kubebuilder:rbac:groups=metrics.k8s.io,resources=pods;nodes,verbs=get;list;watch
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.

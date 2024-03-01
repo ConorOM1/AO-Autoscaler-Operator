@@ -29,3 +29,5 @@ rules:
   - autoscalers/status
   verbs:
   - get
+  - update
+  - patch

@@ -32,6 +32,7 @@ type AutoscalerSpec struct {
 	Foo                  string `json:"foo,omitempty"`
 	TargetDeploymentName string `json:"targetDeploymentName"`
 	MinReplicas          int32  `json:"minReplicas"`
+	MaxReplicas          int32  `json:"maxReplicas"`
 }
 
 // AutoscalerStatus defines the observed state of Autoscaler

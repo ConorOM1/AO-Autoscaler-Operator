@@ -72,9 +72,19 @@ func (r *AutoscalerReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 
 	// Update Deployment replicas if necessary
 	minReplicas := autoscaler.Spec.MinReplicas
-	if *deployment.Spec.Replicas != minReplicas {
+	if *deployment.Spec.Replicas < minReplicas {
 		log.Info("Updating Deployment replicas", "from ", *deployment.Spec.Replicas, "to ", minReplicas)
 		deployment.Spec.Replicas = &minReplicas
+		if err := r.Update(ctx, &deployment); err != nil {
+			log.Error(err, "unable to update Deployment replicas")
+			return ctrl.Result{}, err
+		}
+	}
+
+	maxReplicas := autoscaler.Spec.MaxReplicas
+	if *deployment.Spec.Replicas > maxReplicas {
+		log.Info("Updating Deployment replicas", "from ", *deployment.Spec.Replicas, "to ", maxReplicas)
+		deployment.Spec.Replicas = &maxReplicas
 		if err := r.Update(ctx, &deployment); err != nil {
 			log.Error(err, "unable to update Deployment replicas")
 			return ctrl.Result{}, err

@@ -38,12 +38,19 @@ spec:
                 description: Foo is an example field of Autoscaler. Edit autoscaler_types.go
                   to remove/update
                 type: string
+              maxReplicas:
+                format: int32
+                type: integer
               minReplicas:
+                format: int32
+                type: integer
+              targetCPU:
                 format: int32
                 type: integer
               targetDeploymentName:
                 type: string
             required:
+            - maxReplicas
             - minReplicas
             - targetDeploymentName
             type: object

@@ -29,10 +29,11 @@ type AutoscalerSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of Autoscaler. Edit autoscaler_types.go to remove/update
-	Foo                  string `json:"foo,omitempty"`
-	TargetDeploymentName string `json:"targetDeploymentName"`
-	MinReplicas          int32  `json:"minReplicas"`
-	MaxReplicas          int32  `json:"maxReplicas"`
+	Foo                            string `json:"foo,omitempty"`
+	TargetDeploymentName           string `json:"targetDeploymentName"`
+	MinReplicas                    *int32 `json:"minReplicas"`
+	MaxReplicas                    int32  `json:"maxReplicas"`
+	TargetCPUUtilizationPercentage *int32 `json:"targetCPUUtilizationPercentage"`
 }
 
 // AutoscalerStatus defines the observed state of Autoscaler

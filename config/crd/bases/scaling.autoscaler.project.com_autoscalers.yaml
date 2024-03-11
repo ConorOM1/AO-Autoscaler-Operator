@@ -44,7 +44,7 @@ spec:
               minReplicas:
                 format: int32
                 type: integer
-              targetCPU:
+              targetCPUUtilizationPercentage:
                 format: int32
                 type: integer
               targetDeploymentName:
@@ -52,6 +52,7 @@ spec:
             required:
             - maxReplicas
             - minReplicas
+            - targetCPUUtilizationPercentage
             - targetDeploymentName
             type: object
           status:

@@ -27,6 +27,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	scalingv1alpha1 "github.com/ConorOM1/AO-Autoscaler-Operator/api/v1alpha1"
+	autoscalingv1 "k8s.io/api/autoscaling/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // AutoscalerReconciler reconciles a Autoscaler object
@@ -71,25 +73,27 @@ func (r *AutoscalerReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 		return ctrl.Result{}, err
 	}
 
-	// Update Deployment replicas if necessary
-	minReplicas := autoscaler.Spec.MinReplicas
-	if *deployment.Spec.Replicas < minReplicas {
-		log.Info("Updating Deployment replicas", "from ", *deployment.Spec.Replicas, "to ", minReplicas)
-		deployment.Spec.Replicas = &minReplicas
-		if err := r.Update(ctx, &deployment); err != nil {
-			log.Error(err, "unable to update Deployment replicas")
-			return ctrl.Result{}, err
-		}
+	// Define the HPA resource
+	hpa := &autoscalingv1.HorizontalPodAutoscaler{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      autoscaler.Name + "-hpa",
+			Namespace: autoscaler.Namespace,
+		},
+		Spec: autoscalingv1.HorizontalPodAutoscalerSpec{
+			ScaleTargetRef: autoscalingv1.CrossVersionObjectReference{
+				APIVersion: "apps/v1",
+				Kind:       "Deployment",
+				Name:       autoscaler.Spec.TargetDeploymentName,
+			},
+			MinReplicas:                    autoscaler.Spec.MinReplicas,
+			MaxReplicas:                    autoscaler.Spec.MaxReplicas,
+			TargetCPUUtilizationPercentage: autoscaler.Spec.TargetCPUUtilizationPercentage,
+		},
 	}
 
-	maxReplicas := autoscaler.Spec.MaxReplicas
-	if *deployment.Spec.Replicas > maxReplicas {
-		log.Info("Updating Deployment replicas", "from ", *deployment.Spec.Replicas, "to ", maxReplicas)
-		deployment.Spec.Replicas = &maxReplicas
-		if err := r.Update(ctx, &deployment); err != nil {
-			log.Error(err, "unable to update Deployment replicas")
-			return ctrl.Result{}, err
-		}
+	// Create the HPA resource
+	if err := r.Create(ctx, hpa); err != nil {
+		return ctrl.Result{}, err
 	}
 
 	// Update Autoscaler status

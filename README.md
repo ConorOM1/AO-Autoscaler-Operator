@@ -1,11 +1,9 @@
-# ao-autoscaler
-// TODO(user): Add simple overview of use/purpose
-
+# AO-Autoscaler
+A Kubernetes Operator designed to automate the scaling of a deployment on a cluster.
 ## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
-
+The operator is configured to scale based on the following metrics; Minimum Replicas, Maximum Replicas and CPU Utilisation. Use an instance of the 'Autoscaler' CR to automate your scaling requirements.
 ## Getting Started
-You’ll need a Kubernetes cluster to run against. You can use [KIND](https://sigs.k8s.io/kind) to get a local cluster for testing, or run against a remote cluster.
+You’ll need a Kubernetes or Openshift cluster to run against. You can use [KIND](https://sigs.k8s.io/kind) to get a local cluster for testing, or run against a remote cluster.
 **Note:** Your controller will automatically use the current context in your kubeconfig file (i.e. whatever cluster `kubectl cluster-info` shows).
 
 ### Running on the cluster

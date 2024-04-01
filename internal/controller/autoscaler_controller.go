@@ -73,6 +73,19 @@ func (r *AutoscalerReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 		return ctrl.Result{}, err
 	}
 
+	// Check for applying ManualReplicasOverride
+	if autoscaler.Spec.ManualReplicasOverride != nil {
+		if deployment.Spec.Replicas == nil || *deployment.Spec.Replicas != *autoscaler.Spec.ManualReplicasOverride {
+			deployment.Spec.Replicas = autoscaler.Spec.ManualReplicasOverride
+			if err := r.Update(ctx, &deployment); err != nil {
+				log.Error(err, "Failed to update Deployment for ManualReplicasOverride")
+				return ctrl.Result{}, err
+			}
+			log.Info("Updated Deployment replicas to ManualReplicasOverride value", "ManualReplicasOverride", *autoscaler.Spec.ManualReplicasOverride)
+			return ctrl.Result{}, nil
+		}
+	}
+
 	// Define the HPA resource
 	hpa := &autoscalingv1.HorizontalPodAutoscaler{
 		ObjectMeta: metav1.ObjectMeta{

@@ -38,6 +38,9 @@ spec:
                 description: Foo is an example field of Autoscaler. Edit autoscaler_types.go
                   to remove/update
                 type: string
+              manualReplicasOverride:
+                format: int32
+                type: integer
               maxReplicas:
                 format: int32
                 type: integer

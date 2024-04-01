@@ -34,6 +34,7 @@ type AutoscalerSpec struct {
 	MinReplicas                    *int32 `json:"minReplicas"`
 	MaxReplicas                    int32  `json:"maxReplicas"`
 	TargetCPUUtilizationPercentage *int32 `json:"targetCPUUtilizationPercentage"`
+	ManualReplicasOverride         *int32 `json:"manualReplicasOverride,omitempty"`
 }
 
 // AutoscalerStatus defines the observed state of Autoscaler

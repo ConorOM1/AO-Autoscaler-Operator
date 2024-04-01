@@ -9,6 +9,7 @@ metadata:
     app.kubernetes.io/created-by: ao-autoscaler
   name: autoscaler-apache
 spec:
+  manualReplicasOverride: 10
   minReplicas: 2
   maxReplicas: 4
   targetCPUUtilizationPercentage: 10

@@ -29,12 +29,24 @@ type AutoscalerSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of Autoscaler. Edit autoscaler_types.go to remove/update
-	Foo                            string `json:"foo,omitempty"`
-	TargetDeploymentName           string `json:"targetDeploymentName"`
-	MinReplicas                    *int32 `json:"minReplicas"`
-	MaxReplicas                    int32  `json:"maxReplicas"`
+	Foo string `json:"foo,omitempty"`
+
+	// TargetDeploymentName is the name of the Deployment that the Autoscaler will manage. This field is not optional
+	TargetDeploymentName string `json:"targetDeploymentName"`
+
+	// MinReplicas is the minimum number of replicas that the Autoscaler can scale down to. This field is optional.
+	MinReplicas *int32 `json:"minReplicas"`
+
+	// MaxReplicas is the maximum number of replicas that the Autoscaler can scale up to. This field is not optional.
+	MaxReplicas int32 `json:"maxReplicas"`
+
+	// TargetCPUUtilizationPercentage is the target average CPU utilization (as a percentage) over all of the pods.
+	// If the average CPU utilization exceeds this threshold, the Autoscaler will scale up. This field is optional
 	TargetCPUUtilizationPercentage *int32 `json:"targetCPUUtilizationPercentage"`
-	ManualReplicasOverride         *int32 `json:"manualReplicasOverride,omitempty"`
+
+	// ManualReplicasOverride is used to manually set the number of desired pods. 
+	// If set, this will supersede the other replica fields. This field is optional
+	ManualReplicasOverride *int32 `json:"manualReplicasOverride,omitempty"`
 }
 
 // AutoscalerStatus defines the observed state of Autoscaler

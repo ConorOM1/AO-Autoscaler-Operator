@@ -8,7 +8,7 @@ You’ll need a Kubernetes or Openshift cluster to run against. You can use [KIN
 
 ## Autoscaler Custom Resource
 
-TargetDeploymentName: Is the name of the Deployment that the Autoscaler will manage. This field is not optional
+`TargetDeploymentName:` Is the name of the Deployment that the Autoscaler will manage. This field is not optional
 
 `MinReplicas:` (Optional) Is the minimum number of replicas that the Autoscaler can scale down to. This field is optional.
 

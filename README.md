@@ -10,15 +10,15 @@ You’ll need a Kubernetes or Openshift cluster to run against. You can use [KIN
 
 TargetDeploymentName: Is the name of the Deployment that the Autoscaler will manage. This field is not optional
 
-MinReplicas: (Optional) Is the minimum number of replicas that the Autoscaler can scale down to. This field is optional.
+`MinReplicas:` (Optional) Is the minimum number of replicas that the Autoscaler can scale down to. This field is optional.
 
-MaxReplicas: Is the maximum number of replicas that the Autoscaler can scale up to. This field is not optional.
+`MaxReplicas:` Is the maximum number of replicas that the Autoscaler can scale up to. This field is not optional.
 
-TargetCPUUtilizationPercentage: (Optional) Is the target average CPU utilization (as a percentage) over all of the pods. If the average CPU utilization exceeds this threshold, the Autoscaler will scale up. This field is optional
+`TargetCPUUtilizationPercentage:` (Optional) Is the target average CPU utilization (as a percentage) over all of the pods. If the average CPU utilization exceeds this threshold, the Autoscaler will scale up. This field is optional
 
-ManualReplicasOverride: (Optional) Is used to manually set the number of desired pods. If set, this will supersede the other replica fields. This field is optional.
+`ManualReplicasOverride:` (Optional) Is used to manually set the number of desired pods. If set, this will supersede the other replica fields. This field is optional.
 
-Autoscaler Sample CR can be viewed [Here](config/samples/scaling_v1alpha1_autoscaler.yaml)
+`Autoscaler Sample CR` can be viewed [Here](config/samples/scaling_v1alpha1_autoscaler.yaml)
 
 ### Running on the cluster
 1. Install Instances of Custom Resources:

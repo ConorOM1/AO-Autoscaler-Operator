@@ -40,17 +40,22 @@
         }
         .github-logo-container {
             position: absolute;
-            bottom: 500px;
+            bottom: 400px;
             left: 3%;
         }
-        .github-logo {
-            display: inline-block;
+        .github-logo, .report-icon, .youtube-icon {
             width: 150px;
             vertical-align: middle;
         }
-        .student-info {
+        .icon-text {
             color: white;
-            margin-top: 10px;
+            margin-top: 5px;
+            display: block;
+            text-align: center;
+        }
+        .icon-container {
+            display: inline-block;
+            margin-right: 20px;
         }
     </style>
 </head>
@@ -62,9 +67,24 @@
         <div class="student">Conor O'Malley<br>Student No: 20099913</div>
     </div>
     <div class="github-logo-container">
-        <a href="https://github.com/ConorOM1/AO-Autoscaler-Operator">
-            <img src="page_images/github_logo.png" alt="GitHub Logo" class="github-logo">
-        </a>
+        <div class="icon-container">
+            <a href="https://github.com/ConorOM1/AO-Autoscaler-Operator">
+                <img src="page_images/github_logo.png" alt="GitHub Logo" class="github-logo">
+                <span class="icon-text">Repository</span>
+            </a>
+        </div>
+        <div class="icon-container">
+            <a href="https://drive.google.com/file/d/1k7A_xKShdq8zxZ8k3ijr9CG15A-Ja13I/view?usp=sharing">
+                <img src="page_images/report_icon.png" alt="Report Icon" class="report-icon">
+                <span class="icon-text">Report</span>
+            </a>
+        </div>
+        <div class="icon-container">
+            <a href="https://youtu.be/cUA50NTcKlk">
+                <img src="page_images/youtube_logo.png" alt="YouTube Icon" class="youtube-icon">
+                <span class="icon-text">Demo</span>
+            </a>
+        </div>
     </div>
 </body>
 </html>
